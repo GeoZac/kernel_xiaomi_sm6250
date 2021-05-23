@@ -506,7 +506,7 @@ static int tas25xx_smartamp_enable_set(struct snd_kcontrol *pKcontrol,
         return 0;
     }
 
-    pr_info("TI-SmartPA: %s: case %d, number_of_ch=%d\n", __func__, user_data, number_of_ch);
+    pr_debug("TI-SmartPA: %s: case %d, number_of_ch=%d\n", __func__, user_data, number_of_ch);
 
     s_tas_smartamp_enable = user_data;
     if (s_tas_smartamp_enable == 0) {
@@ -625,7 +625,7 @@ static int tas25xx_smartamp_enable_get(struct snd_kcontrol *pKcontrol,
     int ret = 0;
     int user_data = s_tas_smartamp_enable;
     pUcontrol->value.integer.value[0] = user_data;
-    pr_info("TI-SmartPA: %s: case %d(0=DISABLE, 1=ENABLE)\n", __func__, user_data);
+    pr_debug("TI-SmartPA: %s: case %d(0=DISABLE, 1=ENABLE)\n", __func__, user_data);
     return ret;
 }
 
