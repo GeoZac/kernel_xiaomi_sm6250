@@ -30,6 +30,8 @@ jobs:
             echo 'export PATH="$HOME/clang/bin:$HOME/toolchain/bin:$HOME/toolchain-arm/bin:$PATH"' >> $BASH_ENV
             echo 'export ARCH=arm64' >> $BASH_ENV
             echo 'export SUBARCH=arm64' >> $BASH_ENV
+            echo 'export KBUILD_BUILD_USER="GeoZac"' >> $BASH_ENV
+            echo 'export KBUILD_BUILD_HOST="CircleCI"' >> $BASH_ENV
             source $BASH_ENV
             cd ~/kernel
             make clean && make mrproper O=output
