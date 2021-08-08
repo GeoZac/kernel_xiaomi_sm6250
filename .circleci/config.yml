@@ -49,6 +49,10 @@ jobs:
             zip -r9 "${ZIPNAME}" ./* -x ".git/*" "README.md" ".gitignore" "*.zip"
             curl -F chat_id=$CHAT_ID -F document=@$ZIPNAME -F parse_mode=markdown https://api.telegram.org/bot$BOT_API_TOKEN/sendDocument
 
+      - store_artifacts:
+          path: ~/kernel/output/.config
+          destination: kernel_defconfig
+
 workflows:
   version: 2.1
   cooking:
