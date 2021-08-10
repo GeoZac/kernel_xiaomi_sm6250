@@ -39,6 +39,12 @@ jobs:
             make -j$(nproc --all) CC=clang LD=ld.lld CROSS_COMPILE=aarch64-linux-android- CLANG_TRIPLE=aarch64-linux-gnu- CROSS_COMPILE_ARM32=arm-linux-androideabi- O=output
 
       - run:
+          name: Check version
+          no_output_timeout: 20m
+          command: |
+            cat ~/kernel/output/include/generated/compile.h
+
+      - run:
           name: Send to telegram
           no_output_timeout: 20m
           command: |
