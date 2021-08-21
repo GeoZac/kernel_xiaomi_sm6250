@@ -1,6 +1,7 @@
 version: 2.1
 jobs:
   Kernel_miatoll:
+   resource_class: "large"
    docker:
       - image: ubuntu:18.04
    steps:
