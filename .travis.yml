@@ -22,7 +22,7 @@ before_install:
   - cd ~/kernel
   - make clean && make mrproper O=output
   - make cust_defconfig O=output
-  - make -j$(nproc --all) CC=clang LD=ld.lld CROSS_COMPILE=aarch64-linux-android- CLANG_TRIPLE=aarch64-linux-gnu- CROSS_COMPILE_ARM32=arm-linux-androideabi- O=output
+  - travis_wait make -j$(nproc --all) CC=clang LD=ld.lld CROSS_COMPILE=aarch64-linux-android- CLANG_TRIPLE=aarch64-linux-gnu- CROSS_COMPILE_ARM32=arm-linux-androideabi- O=output
 
 script:
   - export ARCH=arm64
