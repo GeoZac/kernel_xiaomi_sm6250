@@ -4,9 +4,9 @@ dist: bionic
 
 before_install:
   - export TERM=xterm
-  - apt-get update -y
-  - ln -sf /usr/share/zoneinfo/Asia/Kolkata /etc/localtime
-  - apt install bison build-essential curl flex git gnupg gperf ccache liblz4-tool libncurses5-dev libsdl1.2-dev libxml2 libxml2-utils lzop pngcrush schedtool squashfs-tools xsltproc zip zlib1g-dev build-essential kernel-package libncurses5-dev bzip2 git python wget gcc g++ curl sudo libssl-dev openssl -y
+  - sudo apt-get update -y
+  - sudo ln -sf /usr/share/zoneinfo/Asia/Kolkata /etc/localtime
+  - sudo apt install bison build-essential curl flex git gnupg gperf ccache liblz4-tool libncurses5-dev libsdl1.2-dev libxml2 libxml2-utils lzop pngcrush schedtool squashfs-tools xsltproc zip zlib1g-dev build-essential kernel-package libncurses5-dev bzip2 git python wget gcc g++ curl sudo libssl-dev openssl -y
   - cd ~
   - mkdir clang && wget -q https://android.googlesource.com/platform/prebuilts/clang/host/linux-x86/+archive/refs/heads/master/clang-r428724.tar.gz -O clang.tar.gz && tar -xzf clang.tar.gz -C clang && rm clang.tar.gz
   - git clone https://github.com/LineageOS/android_prebuilts_gcc_linux-x86_aarch64_aarch64-linux-android-4.9 --depth=1 toolchain
