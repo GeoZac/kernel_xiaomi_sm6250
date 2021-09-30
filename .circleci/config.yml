@@ -55,7 +55,7 @@ jobs:
           no_output_timeout: 20m
           command: |
             cd ~/AnyKernel
-            cp ~/kernel/output/arch/arm64/boot/Image.gz-dtb .
+            cp ~/kernel/output/arch/arm64/boot/Image.gz .
             cp ~/kernel/output/arch/arm64/boot/dtbo.img .
             ZIPNAME="Kernel-$(date +%d_%m_%Y_%H_%M)-miatoll.zip"
             zip -r9 "${ZIPNAME}" ./* -x ".git/*" "README.md" ".gitignore" "*.zip"
