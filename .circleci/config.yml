@@ -15,6 +15,7 @@ jobs:
       - restore_cache:
           keys:
             - source-{{ .Branch }}
+            - source
 
       - checkout
 
