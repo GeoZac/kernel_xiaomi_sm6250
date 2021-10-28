@@ -39,6 +39,7 @@ jobs:
             echo 'export SUBARCH=arm64' >> $BASH_ENV
             echo 'export KBUILD_BUILD_USER="GeoZac"' >> $BASH_ENV
             echo 'export KBUILD_BUILD_HOST="CircleCI"' >> $BASH_ENV
+            echo 'export COMMIT_HEAD="$(git -C kernel log -1 --pretty="%h %s")"' >> $BASH_ENV
             source $BASH_ENV
             cd ~/kernel
             make clean && make mrproper O=output
@@ -60,7 +61,7 @@ jobs:
             cp ~/kernel/output/arch/arm64/boot/dtbo.img .
             ZIPNAME="Kernel-$(date +%d_%m_%Y_%H_%M)-miatoll.zip"
             zip -r9 "${ZIPNAME}" ./* -x ".git/*" "README.md" ".gitignore" "*.zip"
-            curl -F chat_id=$CHAT_ID -F document=@$ZIPNAME -F parse_mode=markdown https://api.telegram.org/bot$BOT_API_TOKEN/sendDocument
+            curl -F chat_id=$CHAT_ID -F document=@$ZIPNAME -F caption="$COMMIT_HEAD on $CIRCLE_BRANCH" -F parse_mode=markdown https://api.telegram.org/bot$BOT_API_TOKEN/sendDocument > /dev/null
 
       - store_artifacts:
           path: ~/kernel/output/.config
