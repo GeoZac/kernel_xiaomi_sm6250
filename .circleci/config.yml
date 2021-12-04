@@ -17,6 +17,10 @@ jobs:
             - source-{{ .Branch }}
             - source
 
+      - restore_cache:
+          keys:
+            - ccache
+
       - checkout
 
       - run:
@@ -35,6 +39,8 @@ jobs:
           command: |
             echo 'export CROSS_COMPILE=$HOME/toolchain/bin/aarch64-linux-android-' >> $BASH_ENV
             echo 'export PATH="$HOME/clang/bin:$HOME/toolchain/bin:$HOME/toolchain-arm/bin:$PATH"' >> $BASH_ENV
+            echo 'export PATH="/usr/lib/ccache/bin:$PATH"' >> $BASH_ENV
+            echo 'export CCACHE_DIR="/var/cache/ccache"' >> $BASH_ENV
             echo 'export ARCH=arm64' >> $BASH_ENV
             echo 'export SUBARCH=arm64' >> $BASH_ENV
             echo 'export KBUILD_BUILD_USER="GeoZac"' >> $BASH_ENV
@@ -44,13 +50,19 @@ jobs:
             cd ~/kernel
             make clean && make mrproper O=output
             make cust_defconfig O=output
-            make -j$(nproc --all) CC=clang LD=ld.lld CROSS_COMPILE=aarch64-linux-android- CLANG_TRIPLE=aarch64-linux-gnu- CROSS_COMPILE_ARM32=arm-linux-androideabi- O=output
+            make -j$(nproc --all) CC="ccache clang" LD=ld.lld CROSS_COMPILE=aarch64-linux-android- CLANG_TRIPLE=aarch64-linux-gnu- CROSS_COMPILE_ARM32=arm-linux-androideabi- O=output
 
       - run:
           name: Check version
           no_output_timeout: 20m
           command: |
             cat ~/kernel/output/include/generated/compile.h
+
+      - run:
+          name: Show ccache status
+          no_output_timeout: 20m
+          command: |
+            ccache -s
 
       - run:
           name: Send to telegram
@@ -71,6 +83,11 @@ jobs:
               paths:
                     - "~/kernel/.git"
               key: source-{{ .Branch }}
+
+      - save_cache:
+              paths:
+                    - "/var/cache/ccache"
+              key: ccache
 
 workflows:
   version: 2
