@@ -2228,13 +2228,13 @@ static int smb1398_div2_cp_parse_dt(struct smb1398_chip *chip)
 				"qcom,cc-mode-taper-main-icl-ua",
 				&chip->cc_mode_taper_main_icl_ua);
 
-	/* Default parallel output configuration is VPH connection */
-	chip->pl_output_mode = POWER_SUPPLY_PL_OUTPUT_VPH;
+	/* Default parallel output configuration is VBAT connection */
+	chip->pl_output_mode = POWER_SUPPLY_PL_OUTPUT_VBAT;
 	of_property_read_u32(chip->dev->of_node, "qcom,parallel-output-mode",
 			&chip->pl_output_mode);
 
-	/* Default parallel input configuration is USBMID connection */
-	chip->pl_input_mode = POWER_SUPPLY_PL_USBMID_USBMID;
+	/* Default parallel input configuration is USBIN connection */
+	chip->pl_input_mode = POWER_SUPPLY_PL_USBIN_USBIN;
 	of_property_read_u32(chip->dev->of_node, "qcom,parallel-input-mode",
 			&chip->pl_input_mode);
 
