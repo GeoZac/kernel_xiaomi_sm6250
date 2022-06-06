@@ -1,16 +1,16 @@
 version: 2.1
 jobs:
   Kernel_miatoll:
-   docker:
+    docker:
       - image: ubuntu:18.04
-   working_directory: ~/kernel
-   steps:
+    working_directory: ~/kernel
+    steps:
       - run:
           name: Prepare Environment
           no_output_timeout: 20m
           command: |
-           export TERM=xterm
-           apt-get update -y && ln -sf /usr/share/zoneinfo/Asia/Kolkata /etc/localtime && apt-get install --no-install-recommends bison build-essential ca-certificates cpio curl flex git gnupg gperf ccache liblz4-tool libncurses5-dev libsdl1.2-dev libxml2 libxml2-utils lzop pngcrush schedtool squashfs-tools xsltproc zip zlib1g-dev build-essential kernel-package libncurses5-dev bzip2 git python wget gcc g++ curl sudo libssl-dev openssl tzdata ssh -y
+            export TERM=xterm
+            apt-get update -y && ln -sf /usr/share/zoneinfo/Asia/Kolkata /etc/localtime && apt-get install --no-install-recommends bison build-essential ca-certificates cpio curl flex git gnupg gperf ccache liblz4-tool libncurses5-dev libsdl1.2-dev libxml2 libxml2-utils lzop pngcrush schedtool squashfs-tools xsltproc zip zlib1g-dev build-essential kernel-package libncurses5-dev bzip2 git python wget gcc g++ curl sudo libssl-dev openssl tzdata ssh -y
 
       - restore_cache:
           keys:
@@ -68,9 +68,12 @@ jobs:
           destination: kernel_defconfig
 
       - save_cache:
-              paths:
-                    - "~/kernel/.git"
-              key: source-{{ .Branch }}
+          paths:
+            - "~/kernel/.git"
+          key: source-{{ .Branch }}
+
+    # The resource_class feature allows configuring CPU and RAM resources for each job. Different resource classes are available for different executors. https://circleci.com/docs/2.0/configuration-reference/#resourceclass
+    resource_class: large
 
 workflows:
   version: 2
