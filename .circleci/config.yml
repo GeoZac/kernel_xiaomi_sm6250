@@ -17,6 +17,11 @@ jobs:
             - source-{{ .Branch }}
             - source
 
+      - restore_cache:
+          name: Restoring CCache
+          keys:
+            - ccache-{{ .Branch }}
+
       - checkout
 
       - run:
@@ -40,12 +45,13 @@ jobs:
             echo 'export SUBARCH=arm64' >> $BASH_ENV
             echo 'export KBUILD_BUILD_USER="GeoZac"' >> $BASH_ENV
             echo 'export KBUILD_BUILD_HOST="CircleCI"' >> $BASH_ENV
+            echo 'export 	CCACHE="$(command -v ccache)"' >> $BASH_ENV
             echo 'export COMMIT_HEAD="$(git -C kernel log -1 --pretty="%h %s")"' >> $BASH_ENV
             source $BASH_ENV
             cd ~/kernel
             make clean && make mrproper O=output
             make cust_defconfig O=output
-            make -j$(nproc --all) CC=clang LD=ld.lld CROSS_COMPILE=aarch64-linux-android- CLANG_TRIPLE=aarch64-linux-gnu- CROSS_COMPILE_ARM32=arm-linux-androideabi- O=output
+            make -j$(nproc --all) CC="${CCACHE} clang" LD=ld.lld CROSS_COMPILE=aarch64-linux-android- CLANG_TRIPLE=aarch64-linux-gnu- CROSS_COMPILE_ARM32=arm-linux-androideabi- O=output
 
       - run:
           name: Check version
@@ -72,6 +78,12 @@ jobs:
           paths:
             - "~/kernel/.git"
           key: source-{{ .Branch }}
+
+      - save_cache:
+          name: Saving CCache
+          key: ccache-{{ .Branch }}
+          paths:
+            - ~/.ccache
 
     # The resource_class feature allows configuring CPU and RAM resources for each job. Different resource classes are available for different executors. https://circleci.com/docs/2.0/configuration-reference/#resourceclass
     resource_class: large
