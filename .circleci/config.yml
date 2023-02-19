@@ -47,6 +47,7 @@ jobs:
             echo 'export KBUILD_BUILD_HOST="CircleCI"' >> $BASH_ENV
             echo 'export 	CCACHE="$(command -v ccache)"' >> $BASH_ENV
             echo 'export COMMIT_HEAD="$(git -C kernel log -1 --pretty="%h %s")"' >> $BASH_ENV
+            ccache -s
             source $BASH_ENV
             cd ~/kernel
             make clean && make mrproper O=output
@@ -58,6 +59,12 @@ jobs:
           no_output_timeout: 20m
           command: |
             cat ~/kernel/output/include/generated/compile.h
+
+      - run:
+          name: Check CCache status
+          no_output_timeout: 20m
+          command: |
+            ccache -s
 
       - run:
           name: Send to telegram
